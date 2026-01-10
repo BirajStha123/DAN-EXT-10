@@ -1,112 +1,117 @@
-# Custom Encryption–Decryption Program
-# Reads from raw_text.txt, encrypts, decrypts, and verifies correctness
+# Assignment 2 part A which is for Custom Encryption & Decryption Program
+# File location will be  C:\Users\bijen\Downloads\Assignment 2
 
+import os
+#Step 1: We will define the paths of file
+BASE_DIR = r"C:\Users\bijen\Downloads\Assignment 2"
+
+RAW_FILE = os.path.join(BASE_DIR, "raw_text.txt")
+ENC_FILE = os.path.join(BASE_DIR, "encrypted_text.txt")
+DEC_FILE = os.path.join(BASE_DIR, "decrypted_text.txt")
+
+#Step 2:We will encrypt a single character
 def encrypt_char(char, shift1, shift2):
-    # Encrypt lowercase letters
+    # Lowercase letters
     if char.islower():
         pos = ord(char) - ord('a')
 
         if pos <= 12:  # a-m
-            shift = shift1 * shift2
-            new_pos = (pos + shift) % 26
-        else:  # n-z
-            shift = shift1 + shift2
-            new_pos = (pos - shift) % 26
+            new_pos = (pos + (shift1 * shift2)) % 26
+        else:          # n-z
+            new_pos = (pos - (shift1 + shift2)) % 26
 
         return chr(new_pos + ord('a'))
 
-    # Encrypt uppercase letters
+    # Uppercase letters
     elif char.isupper():
         pos = ord(char) - ord('A')
 
         if pos <= 12:  # A-M
             new_pos = (pos - shift1) % 26
-        else:  # N-Z
+        else:          # N-Z
             new_pos = (pos + (shift2 ** 2)) % 26
 
         return chr(new_pos + ord('A'))
 
-    # Other characters remain unchanged
-    else:
-        return char
+    # Other characters unchanged
+    return char
 
-
+#Step 3:We will decrypt a single character
 def decrypt_char(char, shift1, shift2):
-    # Decrypt lowercase letters
+    # Reverse of encryption rules
+
     if char.islower():
         pos = ord(char) - ord('a')
 
-        if pos <= 12:  # a-m (originally shifted forward)
-            shift = shift1 * shift2
-            new_pos = (pos - shift) % 26
-        else:  # n-z (originally shifted backward)
-            shift = shift1 + shift2
-            new_pos = (pos + shift) % 26
+        if pos <= 12:  # a-m
+            new_pos = (pos - (shift1 * shift2)) % 26
+        else:          # n-z
+            new_pos = (pos + (shift1 + shift2)) % 26
 
         return chr(new_pos + ord('a'))
 
-    # Decrypt uppercase letters
     elif char.isupper():
         pos = ord(char) - ord('A')
 
-        if pos <= 12:  # A-M (originally shifted backward)
+        if pos <= 12:  # A-M
             new_pos = (pos + shift1) % 26
-        else:  # N-Z (originally shifted forward)
+        else:          # N-Z
             new_pos = (pos - (shift2 ** 2)) % 26
 
         return chr(new_pos + ord('A'))
 
-    # Other characters remain unchanged
-    else:
-        return char
+    return char
 
-
+#Step 4;We will encrypt a single file
 def encrypt_file(shift1, shift2):
-    with open("raw_text.txt", "r", encoding="utf-8") as infile, \
-         open("encrypted_text.txt", "w", encoding="utf-8") as outfile:
+    if not os.path.exists(RAW_FILE):
+        print("❌ raw_text.txt not found in Assignment 2 folder.")
+        return
+
+    with open(RAW_FILE, "r", encoding="utf-8") as infile, \
+         open(ENC_FILE, "w", encoding="utf-8") as outfile:
 
         for line in infile:
-            encrypted_line = ""
             for char in line:
-                encrypted_line += encrypt_char(char, shift1, shift2)
-            outfile.write(encrypted_line)
+                outfile.write(encrypt_char(char, shift1, shift2))
 
+    print("Encryption completed.")
 
+#Step 5:Decrypting the full file
 def decrypt_file(shift1, shift2):
-    with open("encrypted_text.txt", "r", encoding="utf-8") as infile, \
-         open("decrypted_text.txt", "w", encoding="utf-8") as outfile:
+    with open(ENC_FILE, "r", encoding="utf-8") as infile, \
+         open(DEC_FILE, "w", encoding="utf-8") as outfile:
 
         for line in infile:
-            decrypted_line = ""
             for char in line:
-                decrypted_line += decrypt_char(char, shift1, shift2)
-            outfile.write(decrypted_line)
+                outfile.write(decrypt_char(char, shift1, shift2))
 
+    print("Decryption completed.")
 
+#Step 6:Verify if decryption matches original
 def verify_files():
-    with open("raw_text.txt", "r", encoding="utf-8") as f1, \
-         open("decrypted_text.txt", "r", encoding="utf-8") as f2:
+    with open(RAW_FILE, "r", encoding="utf-8") as f1, \
+         open(DEC_FILE, "r", encoding="utf-8") as f2:
 
         if f1.read() == f2.read():
             print("✅ Decryption successful: Files match.")
         else:
             print("❌ Decryption failed: Files do NOT match.")
 
-
-# ================= MAIN PROGRAM =================
-
+#Step 7:Main program Runs all the step
 def main():
+ #7.1 We will get user input for shifts
     shift1 = int(input("Enter shift1 value: "))
     shift2 = int(input("Enter shift2 value: "))
-
+#7.2 Encrypt the original text
     encrypt_file(shift1, shift2)
-    print("Encryption completed.")
-
+    #7.3  We will decrypt encrypted text
     decrypt_file(shift1, shift2)
-    print("Decryption completed.")
-
+    #7.4 We wil verify the correctness
     verify_files()
 
-
+#8Step 8:Execute the programs
 main()
+
+
 
