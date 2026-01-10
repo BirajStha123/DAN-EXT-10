@@ -1,5 +1,12 @@
 # Assignment 2 part A which is for Custom Encryption & Decryption Program
 # File location will be  C:\Users\bijen\Downloads\Assignment 2
+#Usage:
+#1)Place raw_text.txt and this scripte in the smae folder
+#2)To run the script
+#3)Enter shift1 and shift2 value when prompted
+#4)Program will create encrypted_text.txt and decrypte_text.txt
+#5)Verification will show if decryption matches original
+
 
 import os
 #Step 1: We will define the paths of file
