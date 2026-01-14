@@ -1,0 +1,6 @@
+Average monthly mean maximum temperature (°C) - all stations combined
+---------------------------------------------------------------
+Summer: 32.1°C  (based on 6720 monthly values)
+Autumn: 27.3°C  (based on 6720 monthly values)
+Winter: 21.1°C  (based on 6720 monthly values)
+Spring: 27.4°C  (based on 6720 monthly values)
